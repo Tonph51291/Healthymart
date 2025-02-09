@@ -1,0 +1,20 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Email</th>
+      <th scope="col">Name</th>
+      <th scope="col">Password</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each accounts}}
+      <tr>
+        <th scope="row">{{@index}}</th>
+        <td>{{this.email}}</td>
+        <td>{{this.name}}</td>
+        <td>{{this.password}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

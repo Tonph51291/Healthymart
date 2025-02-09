@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_margin="5dp"
+
+    >
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="horizontal"
+       android:background="@drawable/back_item_product"
+       android:padding="10dp"
+       >
+       <ImageView
+           android:id="@+id/iv_product_image"
+           android:layout_width="50dp"
+           android:layout_height="50dp"
+           android:src="@drawable/quabo" />
+
+       <LinearLayout
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:orientation="vertical"
+           android:paddingStart="16dp">
+
+           <TextView
+               android:id="@+id/tv_product_name"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Oranges"
+               android:textSize="16sp"
+               android:layout_gravity="center"
+               />
+
+           <TextView
+               android:id="@+id/tv_product_detail"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="1kg, priceg"
+               android:textSize="14sp" />
+
+           <TextView
+               android:id="@+id/tv_product_price"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="$10.00"
+               android:textColor="@android:color/holo_red_dark"
+               android:textSize="16sp" />
+
+       </LinearLayout>
+
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_gravity="center"
+           >
+
+           <ImageButton
+               android:id="@+id/btn_decrease"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@drawable/tru"
+               android:background="@color/white"
+               />
+
+           <TextView
+               android:id="@+id/tv_quantity"
+               android:layout_width="40dp"
+               android:layout_height="40dp"
+               android:text="2"
+               android:textSize="16sp"
+
+               android:gravity="center"            />
+
+           <ImageButton
+               android:id="@+id/btn_increase"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@drawable/imgadd"
+               android:background="@color/white"
+               />
+
+       </LinearLayout>
+   </LinearLayout>
+
+</LinearLayout>

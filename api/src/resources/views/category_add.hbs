@@ -1,0 +1,27 @@
+<div class="container">
+  <h2>Thêm Category</h2>
+  <form action="/category/add" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="CateName" class="form-label">Tên Category</label>
+      <input
+        type="text"
+        class="form-control"
+        id="CateName"
+        name="CateName"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="CateImg" class="form-label">Ảnh</label>
+      <input
+        type="file"
+        class="form-control"
+        id="CateImg"
+        name="CateImg"
+        accept="image/*"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-success">Thêm</button>
+  </form>
+</div>

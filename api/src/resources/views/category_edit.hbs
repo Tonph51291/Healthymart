@@ -1,0 +1,40 @@
+<div class="container">
+  <h2>Thêm Category</h2>
+  <form
+    action="/category/{{category._id}}/edit"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+
+    <div class="mb-3">
+      <label for="CateName" class="form-label">Tên Category</label>
+      <input
+        type="text"
+        class="form-control"
+        id="CateName"
+        value="{{category.CateName}}"
+        name="CateName"
+        required
+      />
+    </div>
+    <img
+      src="{{category.CateImg}}"
+      alt="Category Image"
+      width="100"
+      height="100"
+    />
+
+    <div class="mb-3">
+      <label for="CateImg" class="form-label">Ảnh</label>
+      <input
+        type="file"
+        class="form-control"
+        id="CateImg"
+        name="CateImg"
+        accept="image/*"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-success">Cập nhật</button>
+  </form>
+</div>

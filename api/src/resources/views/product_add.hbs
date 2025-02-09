@@ -1,0 +1,55 @@
+<div class="container">
+  <h2>Thêm sản phẩm</h2>
+  <form action="/product/add" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="ProductName" class="form-label">Tên sản phẩm</label>
+      <input
+        type="text"
+        class="form-control"
+        id="ProductName"
+        name="ProductName"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="Price" class="form-label">Giá sản phẩm</label>
+      <input
+        type="text"
+        class="form-control"
+        id="Price"
+        name="Price"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="Quantity" class="form-label">Số lượng sản phẩm</label>
+      <input
+        type="text"
+        class="form-control"
+        id="Quantity"
+        name="Quantity"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="CateID" class="form-label">Loại sản phẩm</label>
+      <select id="CateID" name="CateID" aria-label="Default select example">
+        {{#each categories}}
+          <option value="{{this._id}}">{{this.CateName}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="ProductImd" class="form-label">Ảnh</label>
+      <input
+        type="file"
+        class="form-control"
+        id="ProductImg"
+        name="ProductImg"
+        accept="image/*"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-success">Thêm</button>
+  </form>
+</div>

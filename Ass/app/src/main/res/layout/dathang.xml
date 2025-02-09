@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+
+
+        <!-- Product Image -->
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_width="396dp"
+            android:layout_height="385dp"
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/quabo" />
+
+        <!-- Product Name and Details -->
+        <TextView
+            android:id="@+id/product_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Oranges"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:paddingTop="8dp" />
+
+        <TextView
+            android:id="@+id/product_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1kg"
+            android:textSize="14sp"
+            android:paddingTop="4dp" />
+
+        <!-- Star Rating -->
+        <RatingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="4.0"
+            android:stepSize="0.5"
+            android:isIndicator="true"
+            />
+
+        <!-- Quantity and Price -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="clip_horizontal"
+            android:paddingVertical="8dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/quantity_decrease"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                   android:src="@drawable/tru"
+                    android:textSize="18sp"
+                    android:background="@color/white"
+                    />
+
+                <TextView
+                    android:id="@+id/quantity_text"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="1"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    />
+
+                <ImageButton
+                    android:id="@+id/quantity_increase"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/imgadd"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/product_price"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="$5.00"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="end|center_vertical"
+                android:layout_marginRight="20dp"
+
+                />
+        </LinearLayout>
+
+
+
+
+
+        <!-- Add to Cart Button -->
+        <Button
+            android:id="@+id/add_to_cart_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add to Cart"
+            android:textSize="16sp"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Product List</h2>
+  <a href="/product/add" class="btn btn-primary">Thêm</a>
+</div>
+<form action="" method="post">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Hình ảnh</th>
+        <th scope="col">Tên sản phẩm</th>
+        <th scope="col">Giá</th>
+        <th scope="col">Số lượng</th>
+        <th scope="col">Loại</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {{#each products}}
+        <tr>
+          <th scope="row">{{@index}}</th>
+          <td><img
+              src="{{this.ProductImg}}"
+              alt="Category Image"
+              style="width: 100px; height: auto;"
+            /></td>
+          <td>{{this.ProductName}}</td>
+          <td>{{this.Price}}</td>
+          <td>{{this.Quantity}}</td>
+          <td>{{this.CateID.CateName}}</td>
+          <td>
+            <a href="/product/{{this._id}}/edit" class="btn btn-link">Sửa</a>
+            <form
+              action="/product/{{this._id}}"
+              method="POST"
+              style="display:inline-block;"
+            >
+              <input type="hidden" name="_method" value="DELETE" />
+              <button type="submit" class="btn btn-danger">Xóa</button>
+            </form>
+          </td>
+        </tr>
+
+      {{/each}}
+
+    </tbody>
+  </table>
+</form>
