@@ -5,42 +5,62 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="10dp"
-    >
-
+    android:padding="20dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Nhập thông tin của bạn"
-        android:textSize="30dp"
-        android:textStyle="bold" />
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:paddingBottom="10dp"/>
 
-    <EditText
-        android:id="@+id/edt_sdt_kh"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Số điện thoại " />
 
-    <EditText
-        android:id="@+id/edt_diachi_kh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Địa chỉ " />
+        android:padding="10dp"
+        android:background="@color/white">
 
-    <EditText
-        android:id="@+id/edt_sl_sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Số lượng " />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edt_sdt_kh"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Số điện thoại"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/edt_diachi_kh"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Địa chỉ"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/btn_dathang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:text="Đặt hàng"
-        />
+        android:textSize="18sp"
 
+        android:textColor="@color/white"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="@drawable/button_background"/>
 
 </LinearLayout>

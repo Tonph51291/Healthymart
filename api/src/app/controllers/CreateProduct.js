@@ -160,5 +160,29 @@ class CreateProduct {
       });
   }
 }
+const getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id).populate("CateID");
 
-module.exports = new CreateProduct();
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({
+      status: 200,
+      message: "Success",
+      data: product,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+module.exports = {
+  getProductById,
+  createProduct: new CreateProduct(),
+};

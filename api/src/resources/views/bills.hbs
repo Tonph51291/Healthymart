@@ -1,0 +1,41 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="text-primary">Danh sách hóa đơn</h2>
+
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Mã hóa đơn</th>
+          <th>Tên khách hàng</th>
+          <th>Số điện thoại</th>
+          <th>Địa chỉ nhận hàng</th>
+          <th>Tổng tiền</th>
+          <th>Sản phẩm</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each bills}}
+          <tr>
+            <td>{{_id}}</td>
+            <td>{{customerName}}</td>
+            <td>{{soDienThoai}}</td>
+            <td>{{diaChi}}</td>
+            <td class="text-danger fw-bold">{{totalPrice}} VND</td>
+            <td>
+              <ul class="list-unstyled">
+                {{#each products}}
+                  <li class="text-primary">{{ProductName}}
+                    -
+                    <span class="fw-bold">Số lượng :{{quantity}} </span></li>
+                {{/each}}
+              </ul>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>

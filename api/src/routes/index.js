@@ -13,6 +13,6 @@ function route(app) {
   app.use("/favoriteProduct", favoriteProduct);
   app.use("/bill", bill);
   app.use("/product", createProduct);
-  app.use("/", homeControllers);
+  app.use("/:slug", homeControllers);
 }
 module.exports = route;

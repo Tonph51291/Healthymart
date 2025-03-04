@@ -1,7 +1,9 @@
 package com.example.ass;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.ass.DTO.Respondata;
 import com.example.ass.DTO.UserDTO;
 import com.example.ass.Service.HttpRequest;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,10 +88,24 @@ public class DangNhap extends AppCompatActivity {
       @Override
       public void onResponse(Call<Respondata<UserDTO>> call, Response<Respondata<UserDTO>> response) {
           if (response.isSuccessful() && response.code() == 200 && response.body() != null) {
+              Log.d("user", "onResponse: "+new Gson().toJson(response.body().getUser()));
+              UserDTO user = response.body().getUser(); // Lấy dữ liệu user từ API
+              if (user != null) {
+                  String userId = user.getId(); // Giả sử UserDTO có phương thức getId()
+
+                  Log.d("user i", "onResponse: "+userId);
+
+                  // Lưu userId vào SharedPreferences
+                  SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                  SharedPreferences.Editor editor = sharedPreferences.edit();
+                  editor.putString("user_id", userId);
+                  editor.apply();
               Toast.makeText(DangNhap.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-           startActivity(new Intent(DangNhap.this,Home.class));
+
+           startActivity(new Intent(DangNhap.this,Home.class));}
           } else {
               Toast.makeText(DangNhap.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                Log.e("API_ERROR", "Failure: " + response.body().getMessage());
           }
 
       }
