@@ -3,13 +3,20 @@ const router = express.Router();
 const {
   addBillDetail,
   getListBillDetails,
-  showView,
+  getBillDetails,
+  updateBillDetail,
+  deleteBillDetail,
+  getBillDetailsByBillId,
+  updateQuantityById,
 } = require("../app/controllers/BillDetailsControllers");
-const { index } = require("../app/controllers/CategoryControllers");
 
-// POST route to add a bill detail
-router.get("/get_list_bill_details", getListBillDetails);
-router.post("", addBillDetail);
-router.get("", showView);
+// Routes for BillDetails
+router.get("", getListBillDetails);
+router.get("/:id", getBillDetails);
+router.get("/billDetails/:billId", getBillDetailsByBillId);
+router.post("/add", addBillDetail);
+router.put("/update/:id", updateBillDetail);
+router.delete("/delete/:id", deleteBillDetail);
+router.put("/:id", updateQuantityById);
 
 module.exports = router;

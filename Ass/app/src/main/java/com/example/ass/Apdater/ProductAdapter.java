@@ -1,7 +1,11 @@
 package com.example.ass.Apdater;
 
+import static android.content.Context.MODE_PRIVATE;
+import static java.security.AccessController.getContext;
+
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +26,11 @@ import com.example.ass.DTO.ProductDTO;
 import com.example.ass.DTO.Respondata;
 import com.example.ass.R;
 import com.example.ass.Service.HttpRequest;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -50,121 +57,149 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         ProductDTO productDTO = list.get(position);
 
-        // Image URL and Picasso loading
+        // Load ảnh sản phẩm từ URL
         HttpRequest httpRequest = new HttpRequest();
         String imageUrl = httpRequest.getApiService().BASE_URL + productDTO.getProductImg();
         Log.d("ImageUrl", "ImageUrl: " + imageUrl);
         Picasso.get().load(imageUrl).into(holder.img_product);
 
-        // Set product name and price
+        // Gán thông tin sản phẩm
         holder.txt_name.setText(productDTO.getProductName());
-        holder.txt_price.setText(productDTO.getPrice());
+        holder.txt_price.setText(String.valueOf(productDTO.getPrice()));
 
-        // Set heart icon state (add favorite or not)
+        // Cập nhật trạng thái yêu thích (heart icon)
         updateHeartIconState(holder.img_heart, productDTO.isFavorite());
 
-        // Heart button click listener to toggle favorite
+        // Sự kiện click vào icon trái tim
         holder.img_heart.setOnClickListener(v -> {
             boolean isFavorite = productDTO.isFavorite();
-
             productDTO.setFavorite(!isFavorite);
-
             updateHeartIconState(holder.img_heart, !isFavorite);
         });
+        SharedPreferences sharedPreferences =context.getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String userId = sharedPreferences.getString("user_id", null);
+        if (userId != null) {
+            Log.d("USER_ID", "User ID: " + userId);
+        }
 
-        holder.btn_add.setOnClickListener(v -> {
-            AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-            View view = LayoutInflater.from(context).inflate(R.layout.dialog_dathang, null);
-            alertDialog.setView(view);
-            alertDialog.show();
-            EditText edt_sdt_kh = view.findViewById(R.id.edt_sdt_kh);
-            EditText edt_diachi_kh = view.findViewById(R.id.edt_diachi_kh);
-            EditText edt_sl_sp = view.findViewById(R.id.edt_sl_sp);
-            Button btn_add_dh = view.findViewById(R.id.btn_dathang);
-
-            btn_add_dh.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String sdt_kh = edt_sdt_kh.getText().toString().trim();
-                    String diachi_kh = edt_diachi_kh.getText().toString().trim();
-                    String sl_sp = edt_sl_sp.getText().toString().trim();
-
-                    // Validate inputs
-                    if (sdt_kh.isEmpty() || diachi_kh.isEmpty() || sl_sp.isEmpty()) {
-                        Toast.makeText(context, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    int quantity;
-                    try {
-                        quantity = Integer.parseInt(sl_sp);
-                    } catch (NumberFormatException e) {
-                        Toast.makeText(context, "Số lượng phải là số hợp lệ", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    // Tính tổng tiền
-                    int price;
-                    try {
-                        price = Integer.parseInt(productDTO.getPrice()); // Chuyển price từ String sang int
-                    } catch (NumberFormatException e) {
-                        Toast.makeText(context, "Giá sản phẩm không hợp lệ", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    int tongTien = price * quantity;
-
-                    // Create BillDetalis object
-                    BillDetalis billDetalis = new BillDetalis();
-
-                    billDetalis.setProductID(productDTO);
-                    billDetalis.setSoDienThoai(sdt_kh);
-                    billDetalis.setDiaChi(diachi_kh);
-                    billDetalis.setQuantity(quantity);
-                    billDetalis.setTongTien(tongTien); // Set tổng tiền
-
-                    // Call API to add to cart
-                    addToCart(billDetalis);
-
-                    // Dismiss the dialog
-                    alertDialog.dismiss();
-                }
-            });
-
-
-
-
-
-
-        });
+        // Xử lý sự kiện thêm vào giỏ hàng
+        holder.btn_add.setOnClickListener(v->getBillByUserId(userId, productDTO.get_id()));
     }
-    private void addToCart(BillDetalis billDetalis) {
+
+    private void getBillByUserId(String userId, String productId) {
         HttpRequest httpRequest = new HttpRequest();
-        httpRequest.getApiService().createDonHang(billDetalis).enqueue(new Callback<Respondata<BillDetalis>>() {
+        httpRequest.getApiService().getBillByUserId(userId).enqueue(new Callback<Respondata<List<BillDTO>>>() {
+            @Override
+            public void onResponse(Call<Respondata<List<BillDTO>>> call, Response<Respondata<List<BillDTO>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<BillDTO> bills = response.body().getData();
+                    String existingBillId = null;
+
+                    // Kiểm tra bill nào có total == 0
+                    for (BillDTO bill : bills) {
+                        if (bill.getTotalPrice() == 0) {
+                            existingBillId = bill.getId();
+                            break;
+                        }
+                    }
+
+                    if (existingBillId != null) {
+                        // Nếu có bill có total == 0, sử dụng bill đó
+                        saveBillIdToPreferences(existingBillId);
+                        addToCart(productId, userId, existingBillId);
+                    } else {
+                        // Nếu tất cả bill đều có total != 0, tạo bill mới
+                        addBill(userId, productId);
+                    }
+                } else {
+                    Log.e("Bills", "Lỗi lấy dữ liệu");
+                }
+            }
 
             @Override
-            public void onResponse(Call<Respondata<BillDetalis>> call, Response<Respondata<BillDetalis>> response) {
+            public void onFailure(Call<Respondata<List<BillDTO>>> call, Throwable t) {
+                Toast.makeText(context, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
+                Log.d("API_ERROR", "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    // Hàm lưu billId vào SharedPreferences
+    private void saveBillIdToPreferences(String billId) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("billId", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("billId", billId);
+        editor.apply();
+    }
+
+
+    private void addBill(String userId, String productId) {
+        HttpRequest httpRequest = new HttpRequest();
+        BillDTO newBill = new BillDTO();
+        newBill.setUserId(userId);
+
+        httpRequest.getApiService().createBill(newBill).enqueue(new Callback<Respondata<BillDTO>>() {
+            @Override
+            public void onResponse(Call<Respondata<BillDTO>> call, Response<Respondata<BillDTO>> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().getStatus() == 200) {
-                    Toast.makeText(context, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
-                    Log.d("API_RESPONSE", "Response: " + response.body());
+                    BillDTO createdBill = response.body().getData();
+                    if (createdBill != null) {
+                        String billId = createdBill.getId();
+                        SharedPreferences sharedPreferences = context.getSharedPreferences("billId", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("billId", billId);
+                        editor.apply();
+                        Log.d("ADD_BILL", "Bill created with ID: " + billId);
+                        addToCart(productId, userId, billId);
+                    }
                 } else {
-                 Log.d("loimoi", response.body().getMessage());
-
-
+                    Log.e("ADD_BILL", "Lỗi khi tạo hóa đơn");
                 }
+            }
 
+            @Override
+            public void onFailure(Call<Respondata<BillDTO>> call, Throwable t) {
+                Log.e("ADD_BILL", "Lỗi kết nối: " + t.getMessage());
+            }
+        });
+    }
+
+    private void addToCart( String productId, String userId, String billId) {
+        BillDetalis billDetails = new BillDetalis();
+        billDetails.setBillId(billId);
+        billDetails.setUserId(userId);
+        billDetails.setProductId(productId);
+        billDetails.setQuantity(1);
+
+        HttpRequest httpRequest = new HttpRequest();
+        httpRequest.getApiService().createDonHang(billDetails).enqueue(new Callback<Respondata<BillDetalis>>() {
+            @Override
+            public void onResponse(Call<Respondata<BillDetalis>> call, Response<Respondata<BillDetalis>> response) {
+                if (response.isSuccessful() && response.code() == 201) {
+                    Toast.makeText(context, "Thêm vào giỏ hàng thành công!", Toast.LENGTH_SHORT).show();
+                    Log.d("ADD_TO_CART", "Sản phẩm đã thêm vào hóa đơn ID: " + billId);
+                } else {
+                    Log.e("ADD_TO_CART", "Lỗi khi thêm sản phẩm vào giỏ hàng - Mã lỗi: " + response.code());
+
+                    if (response.errorBody() != null) {
+                        try {
+                            String errorBody = response.errorBody().string();
+                            Log.e("ADD_TO_CART", "Lỗi từ server: " + errorBody);
+                        } catch (IOException e) {
+                            Log.e("ADD_TO_CART", "Không thể đọc lỗi từ server", e);
+                        }
+                    }
+                }
             }
 
             @Override
             public void onFailure(Call<Respondata<BillDetalis>> call, Throwable t) {
-                Toast.makeText(context, "Tạo thành công", Toast.LENGTH_SHORT).show();
-
-
+                Log.e("ADD_TO_CART", "Lỗi kết nối: " + t.getMessage(), t);
             }
+
         });
-
-
     }
+
 
 
 

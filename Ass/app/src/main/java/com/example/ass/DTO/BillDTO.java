@@ -2,21 +2,49 @@ package com.example.ass.DTO;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BillDTO {
     @SerializedName("_id")
     private String id;
-    private String Email;
-    private String Status;
-    private List<BillDetalis> BillDetalis;
+    private String userId;
+    private List<BillDetalis> billDetails;
+    private String soDienThoai;
 
-    public void setBillDetalis(List<com.example.ass.DTO.BillDetalis> billDetalis) {
-        BillDetalis = billDetalis;
+    public String getSoDienThoai() {
+        return soDienThoai;
     }
 
-    public List<com.example.ass.DTO.BillDetalis> getBillDetalis() {
-        return BillDetalis;
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
+    }
+
+    public String getDiaChi() {
+        return diaChi;
+    }
+    public Double totalPrice;
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void setDiaChi(String diaChi) {
+        this.diaChi = diaChi;
+    }
+
+    private String diaChi;
+
+    public List<BillDetalis> getBillDetails() {
+        return billDetails;
+    }
+
+    public void setBillDetails(List<BillDetalis> billDetails) {
+        this.billDetails = billDetails;
     }
 
     public String getId() {
@@ -27,19 +55,13 @@ public class BillDTO {
         this.id = id;
     }
 
-    public String getEmail() {
-        return Email;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setEmail(String email) {
-        Email = email;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getStatus() {
-        return Status;
-    }
 
-    public void setStatus(String status) {
-        Status = status;
-    }
 }

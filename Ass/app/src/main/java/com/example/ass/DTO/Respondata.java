@@ -5,11 +5,7 @@ public class Respondata <T>{
   private  int status;
     private T data;
 
-    public Respondata(String message, int status, T data) {
-        this.message = message;
-        this.status = status;
-        this.data = data;
-    }
+    private  T user;
 
     public String getMessage() {
         return message;
@@ -33,5 +29,20 @@ public class Respondata <T>{
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public T getUser() {
+        return user;
+    }
+
+    public void setUser(T user) {
+        this.user = user;
+    }
+
+    public Respondata(String message, int status, T data, T user) {
+        this.message = message;
+        this.status = status;
+        this.data = data;
+        this.user = user;
     }
 }

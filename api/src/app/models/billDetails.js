@@ -1,25 +1,14 @@
 const mongoose = require("mongoose");
-
 const BillDetailsSchema = new mongoose.Schema({
-  // FK to Bill
-  ProductID: {
+  billId: { type: mongoose.Schema.Types.ObjectId, ref: "Bill", required: true }, // FK to Bill
+
+  productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
-  }, // FK to Product
-  Quantity: { type: Number, required: true },
-
-  SoDienThoai: {
-    type: String,
     required: true,
   },
-  DiaChi: {
-    type: String,
-    required: true,
-  },
-  TongTien: {
-    type: Number,
-    required: true,
-  },
+  quantity: { type: Number, required: true },
+  totalPrice: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model("BillDetails", BillDetailsSchema);

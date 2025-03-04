@@ -1,17 +1,34 @@
 package com.example.ass.DTO;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 public class BillDetalis {
-    @SerializedName("id")
-    private String _id ;
-    private ProductDTO ProductID;
-    private String SoDienThoai;
-    private String DiaChi;
-    private int Quantity;
-    private String BillId;
-    private  int TongTien;
+    @SerializedName("_id")
+    private String _id;
 
+    @SerializedName("billId")
+    private String billId;
+
+    @SerializedName("userId")
+    private String userId;
+
+   private  String productId;
+
+    @SerializedName("quantity")
+    private int quantity;
+
+    private double price;
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    // Getters and Setters
     public String get_id() {
         return _id;
     }
@@ -20,51 +37,35 @@ public class BillDetalis {
         this._id = _id;
     }
 
-    public ProductDTO getProductID() {
-        return ProductID;
-    }
-
-    public void setProductID(ProductDTO productID) {
-        ProductID = productID;
-    }
-
-    public String getSoDienThoai() {
-        return SoDienThoai;
-    }
-
-    public void setSoDienThoai(String soDienThoai) {
-        SoDienThoai = soDienThoai;
-    }
-
-    public String getDiaChi() {
-        return DiaChi;
-    }
-
-    public void setDiaChi(String diaChi) {
-        DiaChi = diaChi;
-    }
-
-    public int getQuantity() {
-        return Quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        Quantity = quantity;
-    }
-
     public String getBillId() {
-        return BillId;
+        return billId;
     }
 
     public void setBillId(String billId) {
-        BillId = billId;
+        this.billId = billId;
     }
 
-    public int getTongTien() {
-        return TongTien;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setTongTien(int tongTien) {
-        TongTien = tongTien;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
